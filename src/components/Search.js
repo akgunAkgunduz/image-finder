@@ -14,6 +14,12 @@ class Search extends Component {
     images: []
   }
 
+  getImages() {
+    axios.get(`${this.state.apiUrl}/?key=${this.state.apiKey}&q=${this.state.searchText}&image_type=photo&per_page=${this.state.amount}`)
+          .then(response => this.setState({images: response.data.hits}))
+          .catch(error => console.log(error));
+  }
+
   handleTextChange = e => {
     // const { searchText, amount, apiUrl, apiKey } = this.state;
     const value = e.target.value;    
@@ -22,14 +28,16 @@ class Search extends Component {
       if (value === '') {
         this.setState({images: []});
       } else {
-        axios.get(`${this.state.apiUrl}/?key=${this.state.apiKey}&q=${this.state.searchText}&image_type=photo&per_page=${this.state.amount}`)
-          .then(response => this.setState({images: response.data.hits}))
-          .catch(error => console.log(error));  
+        this.getImages();          
       }      
     });
   };
 
-  handleSelectChange = (e, index, value) => this.setState({amount: value});
+  handleSelectChange = (e, index, value) => {
+    this.setState({amount: value}, () => {
+      this.getImages();
+    });
+  }
 
   render() {
     // const { searchText, amount, images } = this.state;
@@ -77,6 +85,7 @@ class Search extends Component {
           </Select> */}
           {/* <br/> */}
         </div>
+        <br/>
         {this.state.images.length > 0 ? <ImageResults images={this.state.images} /> : null}
       </React.Fragment>
     );
