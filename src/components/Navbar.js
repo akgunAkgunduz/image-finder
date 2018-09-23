@@ -1,7 +1,6 @@
 import React from 'react';
-import AppBar from 'material-ui/AppBar'
+import AppBar from 'material-ui/AppBar';
 
-const Navbar = () => <AppBar title="Pixabay Image Finder" showMenuIconButton={false}/>
- 
+const Navbar = () => <AppBar title="Image Finder" showMenuIconButton={false}/>
 
 export default Navbar;

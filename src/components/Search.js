@@ -2,15 +2,16 @@ import React, { Component } from 'react';
 import axios from 'axios';
 import TextField from 'material-ui/TextField';
 import SelectField from 'material-ui/SelectField';
+import RaisedButton from 'material-ui/RaisedButton';
 import MenuItem from 'material-ui/MenuItem';
 import ImageResults from './ImageResults';
 
 class Search extends Component {
   state = {
     searchText: '',
-    amount: 12,
+    amount: 4,
     apiUrl: 'https://pixabay.com/api',
-    apiKey: 'YOUR_API_KEY_HERE',
+    apiKey: '9175739-cf00ee6258f146f0f411fc495',
     images: []
   }
 
@@ -21,69 +22,64 @@ class Search extends Component {
   }
 
   handleTextChange = e => {
-    // const { searchText, amount, apiUrl, apiKey } = this.state;
     const value = e.target.value;    
 
     this.setState({ searchText: value }, () => {
       if (value === '') {
         this.setState({images: []});
-      } else {
-        this.getImages();          
-      }      
+      } 
     });
   };
 
-  handleSelectChange = (e, index, value) => {
-    this.setState({amount: value}, () => {
+  handleKeyDown = (e) => {
+    if (e.keyCode === 13) {
       this.getImages();
-    });
+    }
+  }
+
+  handleSelectChange = (e, index, value) => {
+    this.setState({amount: value});
+  }
+
+  handleClick = () => {
+    this.getImages();
   }
 
   render() {
-    // const { searchText, amount, images } = this.state;
-
-    // console.log(images);
-
     return (
       <React.Fragment>
-        <div style={{ display: 'flex', justifyContent: 'space-around' }}>
+        <div style={{ display: 'grid', gridTemplateColumns: '6fr 1fr 3fr', gridColumnGap: '8px' }}>
+          <div>
           <TextField 
             name='searchText'
             value={ this.state.searchText }
             onChange={ this.handleTextChange }
+            onKeyDown={ this.handleKeyDown }
             floatingLabelText={ 'Search for images' }
-            style={{ flexGrow: '1', marginRight: '1rem' }}
-            // fullWidth={ true }
+            style={{ width: '100%' }}
           />
-          {/* <br/> */}
+          </div>
+          <div>
           <SelectField
             name="amount"
             floatingLabelText="Amount"
             value={this.state.amount}
             onChange={this.handleSelectChange}
-            style={{ width: '100px' }}
+            style={{ width: '100%' }}
           >
-            <MenuItem value={3} primaryText="3" />
-            <MenuItem value={6} primaryText="6" />
-            <MenuItem value={12} primaryText="12" />
-            <MenuItem value={24} primaryText="24" />
-            <MenuItem value={48} primaryText="48" />
+            <MenuItem value={4} primaryText="4" />
+            <MenuItem value={8} primaryText="8" />
+            <MenuItem value={16} primaryText="16" />
           </SelectField>
-          {/* <Select
-            value={ this.state.amount }
-            onChange={ this.handleSelectChange }
-            inputProps={{
-              name: 'amount',
-              id: 'amount-id',
-            }}
-          >
-            <MenuItem value={5}>5</MenuItem>
-            <MenuItem value={10}>10</MenuItem>
-            <MenuItem value={15}>15</MenuItem>
-            <MenuItem value={30}>30</MenuItem>
-            <MenuItem value={50}>50</MenuItem>
-          </Select> */}
-          {/* <br/> */}
+          </div>
+          <div style={{ position: 'relative' }}>
+            <RaisedButton 
+              label="Find" 
+              primary={true} 
+              style={{ position: 'absolute', top: '26px', width: '100%' }}
+              onClick={this.handleClick}
+            />
+          </div>
         </div>
         <br/>
         {this.state.images.length > 0 ? <ImageResults images={this.state.images} /> : null}

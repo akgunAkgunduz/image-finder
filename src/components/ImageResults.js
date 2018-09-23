@@ -10,7 +10,7 @@ class ImageResults extends Component {
   state = {
     open: false,
     currentImage: ''
-  }
+  };
 
   handleOpen = image => {
     this.setState({open: true, currentImage: image});
@@ -26,7 +26,7 @@ class ImageResults extends Component {
 
     if (images) {
       imageListContent = (
-        <GridList cols={3}>
+        <GridList cols={2}>
           {images.map(image => (
             <GridTile 
               title={image.tags} 
@@ -48,7 +48,7 @@ class ImageResults extends Component {
         </GridList>
       );
     } else {
-      imageListContent = null
+      imageListContent = null;
     }
 
     const actions = [
